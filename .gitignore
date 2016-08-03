@@ -1,12 +1,48 @@
+# Java compiled files
 *.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+*.releaseBackup
 
 # Package Files #
 *.jar
 *.war
 *.ear
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# IntelliJ IDE
+*.ipr
+*.iml
+.idea
+
+# Maven Build Target
+target/
+
+# Node Modules
+node_modules/
+
+
+# Eclipse IDE
+.project
+.classpath
+.settings
+.checkstyle
+
+server-work
+src/main/java/net/smartcosmos/ext/tenant/rest/server-work/
+src/main/java/net/smartcosmos/ext/tenant/rest/log
+/release.properties
+
+dependency-reduced-pom.xml.bak
+
+*.log
+
+*.iws
+
+*.HIDE
+*.ORIG
+*.SAVE
+
+.DS_Store
+bin
+pom.xml.bak
+pom.xml.tag
+pom.xml.next
+*~
