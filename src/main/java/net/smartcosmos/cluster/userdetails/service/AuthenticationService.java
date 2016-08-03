@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import net.smartcosmos.extension.tenant.dao.TenantDao;
+import net.smartcosmos.cluster.userdetails.dao.UserDetailsDao;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateRequest;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
@@ -17,13 +17,13 @@ import net.smartcosmos.security.user.SmartCosmosUser;
 @Service
 public class AuthenticationService {
 
-    private final TenantDao UserDetailsDao;
+    private final UserDetailsDao UserDetailsDao;
     private final ConversionService conversionService;
 
     @Inject
-    public AuthenticationService(TenantDao UserDetailsDao, ConversionService conversionService) {
+    public AuthenticationService(UserDetailsDao userDetailsDao, ConversionService conversionService) {
 
-        this.UserDetailsDao = UserDetailsDao;
+        this.UserDetailsDao = userDetailsDao;
         this.conversionService = conversionService;
     }
 

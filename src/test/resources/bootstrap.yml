@@ -1,5 +1,5 @@
 project:
-  artifactId: smartcosmos-edge-user-devkit
+  artifactId: smartcosmos-user-details-devkit
 spring:
   application:
     name: @project.artifactId@

@@ -5,8 +5,7 @@
     267 Cane Creek Rd, Fletcher, NC, 28732, USA
     All Rights Reserved.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.smartcosmos</groupId>
@@ -41,6 +40,11 @@
         <dependency>
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-framework</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.smartcosmos</groupId>
+            <artifactId>smartcosmos-user-entity-devkit</artifactId>
             <version>3.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -134,8 +138,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git</connection>
-        <developerConnection>scm:git@github.com:SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git
-        </developerConnection>
+        <developerConnection>scm:git@github.com:SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git</developerConnection>
         <url>https://github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit/tree/master/</url>
     </scm>
 

@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.smartcosmos.cluster.userdetails.dao.UserDetailsDao;
+import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
+import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
-import net.smartcosmos.extension.tenant.domain.AuthorityEntity;
-import net.smartcosmos.extension.tenant.domain.UserEntity;
-import net.smartcosmos.extension.tenant.repository.UserRepository;
-import net.smartcosmos.extension.tenant.util.UuidUtil;
+import net.smartcosmos.cluster.userdetails.repository.UserRepository;
+import net.smartcosmos.cluster.userdetails.util.UuidUtil;
 
 import static java.util.stream.Collectors.toSet;
 
