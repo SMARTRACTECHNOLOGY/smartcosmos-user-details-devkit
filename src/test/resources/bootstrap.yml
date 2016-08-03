@@ -1,0 +1,8 @@
+project:
+  artifactId: smartcosmos-edge-user-devkit
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    config:
+      enabled: false
