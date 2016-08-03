@@ -1,0 +1,9 @@
+.git
+src
+pom.xml
+README.adoc
+.editorconfig
+
+target/*.jar.original
+target/*javadoc.jar
+target/*sources.jar
