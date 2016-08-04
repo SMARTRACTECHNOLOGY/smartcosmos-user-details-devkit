@@ -17,19 +17,19 @@ import net.smartcosmos.security.user.SmartCosmosUser;
 @Service
 public class AuthenticationService {
 
-    private final UserDetailsDao UserDetailsDao;
+    private final UserDetailsDao userDetailsDao;
     private final ConversionService conversionService;
 
     @Inject
     public AuthenticationService(UserDetailsDao userDetailsDao, ConversionService conversionService) {
 
-        this.UserDetailsDao = userDetailsDao;
+        this.userDetailsDao = userDetailsDao;
         this.conversionService = conversionService;
     }
 
     public ResponseEntity<?> authenticate(RestAuthenticateRequest authenticate, SmartCosmosUser user) {
 
-        Optional<UserDetailsResponse> entity = UserDetailsDao.getAuthorities(authenticate.getName(), authenticate.getCredentials());
+        Optional<UserDetailsResponse> entity = userDetailsDao.getAuthorities(authenticate.getName(), authenticate.getCredentials());
         if (entity.isPresent()) {
 
             return ResponseEntity.ok(conversionService.convert(entity.get(), RestAuthenticateResponse.class));
