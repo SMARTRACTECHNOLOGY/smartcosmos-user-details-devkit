@@ -17,10 +17,10 @@ import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfi
 @EnableSmartCosmosEvents
 @Import(ServiceUserAccessSecurityConfiguration.class)
 @Slf4j
-public class UserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
+public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(UserDetailsService.class).web(true).run(args);
+        new SpringApplicationBuilder(DevKitUserDetailsService.class).web(true).run(args);
     }
 
     @Bean

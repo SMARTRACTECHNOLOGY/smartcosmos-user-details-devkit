@@ -20,14 +20,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import net.smartcosmos.cluster.userdetails.UserDetailsService;
+import net.smartcosmos.cluster.userdetails.DevKitUserDetailsService;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 @WebAppConfiguration
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {UserDetailsService.class})
+@SpringApplicationConfiguration(classes = { DevKitUserDetailsService.class})
 public abstract class AbstractTestResource {
 
     protected MediaType contentType = MediaType.APPLICATION_JSON_UTF8;
