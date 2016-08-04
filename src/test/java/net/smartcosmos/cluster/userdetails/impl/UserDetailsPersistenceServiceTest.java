@@ -11,9 +11,6 @@ import org.junit.*;
 import org.junit.runner.*;
 import org.mockito.*;
 import org.mockito.runners.*;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
 import net.smartcosmos.cluster.userdetails.domain.RoleEntity;
@@ -26,81 +23,92 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
-@Ignore
-@SuppressWarnings("Duplicates")
 @RunWith(MockitoJUnitRunner.class)
-@ActiveProfiles("test")
-@WebAppConfiguration
-@IntegrationTest({ "spring.cloud.config.enabled=false", "eureka.client.enabled:false" })
 public class UserDetailsPersistenceServiceTest {
 
     @Mock
     UserRepository userRepository;
 
-    UserDetailsPersistenceService userDetailsPersistenceService = new UserDetailsPersistenceService(userRepository);
-
-    @Before
-    public void setup() throws Exception {
-        MockitoAnnotations.initMocks(this);
-    }
+    @InjectMocks
+    UserDetailsPersistenceService userDetailsPersistenceService;
 
     @After
     public void tearDown() throws Exception {
-        userRepository.deleteAll();
+        reset(userRepository);
     }
 
     @Test
     public void thatGetAuthoritiesSucceeds() throws Exception {
 
-//        String username = "authorityTestUser";
-//        String emailAddress = "authority.user@example.com";
-//
-//        List<String> roles = new ArrayList<>();
-//        roles.add("Admin");
-//
-//        CreateOrUpdateUserRequest userRequest = CreateOrUpdateUserRequest.builder()
-//            .username(username)
-//            .active(true)
-//            .emailAddress(emailAddress)
-//            .roles(roles)
-//            .givenName("John")
-//            .surname("Doe")
-//            .build();
-//        String password = userDetailsPersistenceService.createUser(testUserTenantUrn, userRequest).get().getPassword();
-//
-//        Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, password);
-//
-//        assertTrue(authorities.isPresent());
-//        assertNotNull(authorities.get().getPasswordHash());
-//        assertFalse(authorities.get().getAuthorities().isEmpty());
-//        assertEquals(2, authorities.get().getAuthorities().size());
-//        assertTrue(authorities.get().getAuthorities().contains("https://authorities.smartcosmos.net/things/read"));
-//        assertTrue(authorities.get().getAuthorities().contains("https://authorities.smartcosmos.net/things/read"));
+        String username = "authorityTestUser";
+        String emailAddress = "authority.user@example.com";
+
+        Set<RoleEntity> roles = new HashSet<>();
+        roles.add(RoleEntity.builder().name("Admin").build());
+        UserEntity expectedUser = UserEntity.builder()
+                                            .id(UUID.randomUUID())
+                                            .tenantId(UUID.randomUUID())
+                                            .password("password")
+                                            .active(true)
+                                            .username(username)
+                                            .emailAddress(emailAddress)
+                                            .roles(roles)
+                                            .givenName("John")
+                                            .surname("Doe")
+                                            .build();
+        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
+
+        Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
+        expectedAuthorities.add(AuthorityEntity.builder().authority("https://authorities.smartcosmos.net/things/read").build());
+        expectedAuthorities.add(AuthorityEntity.builder().authority("https://authorities.smartcosmos.net/things/create").build());
+        when(userRepository.getAuthorities(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(expectedAuthorities));
+
+        Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "somePassword");
+
+        assertTrue(authorities.isPresent());
+        assertNotNull(authorities.get().getPasswordHash());
+        assertFalse(authorities.get().getAuthorities().isEmpty());
+        assertEquals(2, authorities.get().getAuthorities().size());
+        assertTrue(authorities.get().getAuthorities().contains("https://authorities.smartcosmos.net/things/read"));
+        assertTrue(authorities.get().getAuthorities().contains("https://authorities.smartcosmos.net/things/create"));
+
+        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
+        verify(userRepository, times(1)).getAuthorities(anyObject(), anyObject());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
     public void thatGetAuthoritiesReturnsEmptySetForMissingRole() throws Exception {
 
-//        String username = "NoAuthorityTestUser";
-//        String emailAddress = "authority.user@example.com";
-//
-//        List<String> roles = new ArrayList<>();
-//
-//        CreateOrUpdateUserRequest userRequest = CreateOrUpdateUserRequest.builder()
-//            .username(username)
-//            .active(true)
-//            .emailAddress(emailAddress)
-//            .roles(roles)
-//            .givenName("John")
-//            .surname("Doe")
-//            .build();
-//        String password = userDetailsPersistenceService.createUser(testUserTenantUrn, userRequest).get().getPassword();
-//
-//        Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, password);
-//
-//        assertTrue(authorities.isPresent());
-//        assertTrue(authorities.get().getAuthorities().isEmpty());
-//        assertNotNull(authorities.get().getPasswordHash());
+        String username = "NoAuthorityTestUser";
+        String emailAddress = "authority.user@example.com";
+
+        Set<RoleEntity> roles = new HashSet<>();
+        UserEntity expectedUser = UserEntity.builder()
+                                            .id(UUID.randomUUID())
+                                            .tenantId(UUID.randomUUID())
+                                            .password("password")
+                                            .active(true)
+                                            .username(username)
+                                            .emailAddress(emailAddress)
+                                            .roles(roles)
+                                            .givenName("John")
+                                            .surname("Doe")
+                                            .build();
+        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
+
+        Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
+        when(userRepository.getAuthorities(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(expectedAuthorities));
+
+        Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "somePassword");
+
+        assertTrue(authorities.isPresent());
+        assertNotNull(authorities.get().getPasswordHash());
+        assertTrue(authorities.get().getAuthorities().isEmpty());
+
+        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
+        verify(userRepository, times(1)).getAuthorities(anyObject(), anyObject());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -114,15 +122,17 @@ public class UserDetailsPersistenceServiceTest {
         roles.add(RoleEntity.builder().name("User").build());
 
         UserEntity expectedUser = UserEntity.builder()
-            .active(true)
-            .username(username)
-            .emailAddress(emailAddress)
-            .roles(roles)
-            .givenName("John")
-            .surname("Doe")
-            .build();
-        doReturn(Optional.of(expectedUser)).when(userRepository).getUserByCredentials(anyString(), anyString());
-//        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
+                                            .id(UUID.randomUUID())
+                                            .tenantId(UUID.randomUUID())
+                                            .password("password")
+                                            .active(true)
+                                            .username(username)
+                                            .emailAddress(emailAddress)
+                                            .roles(roles)
+                                            .givenName("John")
+                                            .surname("Doe")
+                                            .build();
+        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
         expectedAuthorities.add(AuthorityEntity.builder().authority("https://authorities.smartcosmos.net/things/read").build());
@@ -138,6 +148,10 @@ public class UserDetailsPersistenceServiceTest {
         assertEquals(2, authorities.get().getAuthorities().size());
         assertTrue(authorities.get().getAuthorities().contains("https://authorities.smartcosmos.net/things/read"));
         assertTrue(authorities.get().getAuthorities().contains("https://authorities.smartcosmos.net/things/create"));
+
+        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
+        verify(userRepository, times(1)).getAuthorities(anyObject(), anyObject());
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -154,5 +168,8 @@ public class UserDetailsPersistenceServiceTest {
         Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "invalid");
 
         assertFalse(authorities.isPresent());
+
+        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
+        verifyNoMoreInteractions(userRepository);
     }
 }
