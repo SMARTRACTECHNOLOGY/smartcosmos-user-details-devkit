@@ -61,6 +61,10 @@ public class AuthenticationServiceTest {
         ResponseEntity<?> response = authenticationService.authenticate(request, user);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+
+        verify(userDetailsDao, times(1)).getAuthorities(anyString(), anyString());
+        verifyNoMoreInteractions(userDetailsDao);
+        verifyNoMoreInteractions(conversionService);
     }
 
     @Test
@@ -95,5 +99,10 @@ public class AuthenticationServiceTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody() instanceof RestAuthenticateResponse);
         assertEquals(expectedConversionResponse, response.getBody());
+
+        verify(userDetailsDao, times(1)).getAuthorities(anyString(), anyString());
+        verifyNoMoreInteractions(userDetailsDao);
+        verify(conversionService, times(1)).convert(anyObject(), anyObject());
+        verifyNoMoreInteractions(conversionService);
     }
 }
