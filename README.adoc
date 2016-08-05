@@ -1,0 +1,83 @@
+= SMART COSMOS DevKit User Details Service
+SMARTRAC Technology Fletcher Inc <api@smartrac-group.com>
+:version: 3.0.0-SNAPSHOT
+ifdef::env-github[:USER: SMARTRACTECHNOLOGY]
+ifdef::env-github[:REPO: smartcosmos-user-details-devkit]
+ifdef::env-github[:BRANCH: master]
+
+Microservice which provides user authorties for OAuth token generation.
+
+It uses the same database as the https://github.com/SMARTRACTECHNOLOGY/smartcosmos-edge-user-devkit[edge-user-devkit]
+ service for user, tenant, role and authority management, see https://github.com/SMARTRACTECHNOLOGY/smartcosmos-user-entity-devkit[user-entity-devkit].
+
+== License
+This is a private licensed repository, and as such, should not be shared publicly.
+
+== REST API
+
+=== Authenticate - `POST /authenticate`
+
+----
+POST /authenticate
+----
+[source,json]
+----
+{
+    "details": {
+        "grant_type": "password",
+        "scope": "read",
+        "username": "bob"
+    },
+    "authorities": [],
+    "authenticated": false,
+    "principal": "bob",
+    "credentials": "xyz1234567",
+    "name": "bob"
+}
+----
+
+.Response
+----
+200 OK
+----
+[source,json]
+----
+{
+    "urn": "urn:user:uuid:68a76616-3748-4bc2-93c1-3940b47abb7f",
+    "username": "bob",
+    "passwordHash": "",
+    "authorities": [
+        "https://authorities.smartcosmos.net/things/read",
+        "https://authorities.smartcosmos.net/things/create"
+    ],
+    "tenantUrn": "urn:tenant:uuid:69bb7c6a-a43b-493d-8e9d-e5a3ed65728a"
+}
+----
+
+== Configuration
+
+The user details service needs to be properly configured for the following purposes:
+
+- accessing the user database
+- getting called by the auth server for authority provision
+
+[source,yaml]
+----
+server:
+  port: 5555
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/{dbName}?autoReconnect=true
+    username: {dbUser}
+    password: {dbPassword}
+    driver-class-name: org.mariadb.jdbc.Driver
+
+smartcosmos:
+  security:
+    enabled: true
+    resource:
+      user-details:
+        name: {authClientName}
+        password: {authClientPassword}
+----
