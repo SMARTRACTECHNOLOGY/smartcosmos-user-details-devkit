@@ -72,6 +72,11 @@ spring:
     username: {dbUser}
     password: {dbPassword}
     driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      # Edge User DevKit and User Details DevKit share the database scheme, but the details service just reads
+      ddl-auto: verify
+      naming_strategy: org.hibernate.cfg.EJB3NamingStrategy
 
 smartcosmos:
   security:
