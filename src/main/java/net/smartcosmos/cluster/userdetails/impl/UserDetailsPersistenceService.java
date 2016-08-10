@@ -1,13 +1,15 @@
 package net.smartcosmos.cluster.userdetails.impl;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
 
 import net.smartcosmos.cluster.userdetails.dao.UserDetailsDao;
 import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
@@ -15,8 +17,6 @@ import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 import net.smartcosmos.cluster.userdetails.repository.UserRepository;
 import net.smartcosmos.cluster.userdetails.util.UuidUtil;
-
-import static java.util.stream.Collectors.toSet;
 
 @Slf4j
 @Service
@@ -41,17 +41,11 @@ public class UserDetailsPersistenceService implements UserDetailsDao {
         UserEntity user = userOptional.get();
         Optional<Set<AuthorityEntity>> authorityOptional = userRepository.getAuthorities(user.getTenantId(), user.getId());
         Set<AuthorityEntity> authorityEntities = authorityOptional.isPresent() ? authorityOptional.get() : new LinkedHashSet<>();
-        Set<String> authorities = authorityEntities.parallelStream()
-            .map(AuthorityEntity::getAuthority)
-            .collect(toSet());
+        Set<String> authorities = authorityEntities.parallelStream().map(AuthorityEntity::getAuthority).collect(toSet());
 
-        UserDetailsResponse response = UserDetailsResponse.builder()
-            .urn(UuidUtil.getUserUrnFromUuid(user.getId()))
-            .tenantUrn(UuidUtil.getTenantUrnFromUuid(user.getTenantId()))
-            .username(user.getUsername())
-            .passwordHash(user.getPassword())
-            .authorities(authorities)
-            .build();
+        UserDetailsResponse response = UserDetailsResponse.builder().urn(UuidUtil.getUserUrnFromUuid(user.getId()))
+                .tenantUrn(UuidUtil.getTenantUrnFromUuid(user.getTenantId())).username(user.getUsername()).passwordHash(user.getPassword())
+                .authorities(authorities).build();
 
         return Optional.of(response);
     }
