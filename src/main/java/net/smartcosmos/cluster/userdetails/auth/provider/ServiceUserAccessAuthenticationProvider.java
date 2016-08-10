@@ -2,8 +2,9 @@ package net.smartcosmos.cluster.userdetails.auth.provider;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -19,8 +20,7 @@ import net.smartcosmos.security.user.SmartCosmosUser;
 
 /**
  * Implementation of {@link AuthenticationProvider} supporting {@link UsernamePasswordAuthenticationToken} authentication.
- * <p>
- * </p>
+ * <p></p>
  * This authentication provider is used to verify the {@link UsernamePasswordAuthenticationToken} authentication,
  * that is based on the HTTP Basic Authorization header of requests sent by Service Users.
  */
@@ -36,7 +36,7 @@ public class ServiceUserAccessAuthenticationProvider implements AuthenticationPr
      *
      * @param serviceUser the Service User properties
      */
-    @Autowired
+    @Inject
     public ServiceUserAccessAuthenticationProvider(ServiceUserProperties serviceUser) {
         this.serviceUser = serviceUser;
     }
@@ -61,20 +61,19 @@ public class ServiceUserAccessAuthenticationProvider implements AuthenticationPr
 
         if (credentials instanceof String) {
             String password = (String) credentials;
-            if (StringUtils.equals(username, serviceUser.getName()) && StringUtils.equals(password, serviceUser.getPassword())) {
+            if (StringUtils.equals(username, serviceUser.getName())
+                && StringUtils.equals(password, serviceUser.getPassword())) {
 
                 SmartCosmosUser user;
                 if (principal instanceof SmartCosmosUser) {
                     user = (SmartCosmosUser) principal;
-                }
-                else {
+                } else {
                     user = SmartCosmosServiceUser.getServiceUser(username, password, null);
                 }
                 Collection<GrantedAuthority> authorities = user.getAuthorities();
 
                 return new UsernamePasswordAuthenticationToken(user, credentials, authorities);
-            }
-            else {
+            } else {
                 String msg = String.format("Credentials for user '%s' do not match.", authentication.getName());
                 throw new BadCredentialsException(msg);
             }

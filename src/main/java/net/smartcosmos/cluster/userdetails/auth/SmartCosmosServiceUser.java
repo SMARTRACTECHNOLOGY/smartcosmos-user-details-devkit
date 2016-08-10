@@ -44,8 +44,7 @@ public interface SmartCosmosServiceUser {
         Collection<GrantedAuthority> serviceUserAuthorities = new ArrayList<>();
         if (authorities == null || authorities.isEmpty()) {
             serviceUserAuthorities = DEFAULT_SERVICE_USER_AUTHORITIES;
-        }
-        else {
+        } else {
             serviceUserAuthorities.addAll(authorities);
         }
 

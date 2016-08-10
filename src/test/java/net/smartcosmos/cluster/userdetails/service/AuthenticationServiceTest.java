@@ -1,11 +1,5 @@
 package net.smartcosmos.cluster.userdetails.service;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.anyObject;
-import static org.mockito.Mockito.eq;
-
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -22,6 +16,11 @@ import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateRequest;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 import net.smartcosmos.security.user.SmartCosmosUser;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationServiceTest {
@@ -54,7 +53,10 @@ public class AuthenticationServiceTest {
 
         when(userDetailsDao.getAuthorities(anyString(), anyString())).thenReturn(Optional.empty());
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder().credentials("password").name("user").build();
+        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+            .credentials("password")
+            .name("user")
+            .build();
 
         ResponseEntity<?> response = authenticationService.authenticate(request, user);
 
@@ -68,17 +70,29 @@ public class AuthenticationServiceTest {
     @Test
     public void thatAuthenticationSucceeds() {
 
-        String[] expectedAuthorities = { "https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write" };
-        UserDetailsResponse expectedResponse = UserDetailsResponse.builder().username("user").tenantUrn("tenantUrn").urn("userUrn")
-                .passwordHash("passwordHash").authorities(Arrays.asList(expectedAuthorities)).build();
+        String[] expectedAuthorities = {"https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write"};
+        UserDetailsResponse expectedResponse = UserDetailsResponse.builder()
+                                                                  .username("user")
+                                                                  .tenantUrn("tenantUrn")
+                                                                  .urn("userUrn")
+                                                                  .passwordHash("passwordHash")
+                                                                  .authorities(Arrays.asList(expectedAuthorities))
+                                                                  .build();
         when(userDetailsDao.getAuthorities(anyString(), anyString())).thenReturn(Optional.of(expectedResponse));
 
-        RestAuthenticateResponse expectedConversionResponse = RestAuthenticateResponse.builder().authorities(expectedResponse.getAuthorities())
-                .username(expectedResponse.getUsername()).tenantUrn(expectedResponse.getTenantUrn()).userUrn(expectedResponse.getUrn())
-                .passwordHash(expectedResponse.getPasswordHash()).build();
+        RestAuthenticateResponse expectedConversionResponse = RestAuthenticateResponse.builder()
+            .authorities(expectedResponse.getAuthorities())
+            .username(expectedResponse.getUsername())
+            .tenantUrn(expectedResponse.getTenantUrn())
+            .userUrn(expectedResponse.getUrn())
+            .passwordHash(expectedResponse.getPasswordHash())
+            .build();
         when(conversionService.convert(eq(expectedResponse), eq(RestAuthenticateResponse.class))).thenReturn(expectedConversionResponse);
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder().credentials("password").name("user").build();
+        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+                                                                 .credentials("password")
+                                                                 .name("user")
+                                                                 .build();
 
         ResponseEntity<?> response = authenticationService.authenticate(request, user);
 

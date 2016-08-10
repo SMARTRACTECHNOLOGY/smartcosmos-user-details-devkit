@@ -1,11 +1,5 @@
 package net.smartcosmos.cluster.userdetails.impl;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyObject;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +17,11 @@ import net.smartcosmos.cluster.userdetails.domain.RoleEntity;
 import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 import net.smartcosmos.cluster.userdetails.repository.UserRepository;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsPersistenceServiceTest {
@@ -46,8 +45,17 @@ public class UserDetailsPersistenceServiceTest {
 
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(RoleEntity.builder().name("Admin").build());
-        UserEntity expectedUser = UserEntity.builder().id(UUID.randomUUID()).tenantId(UUID.randomUUID()).password("password").active(true)
-                .username(username).emailAddress(emailAddress).roles(roles).givenName("John").surname("Doe").build();
+        UserEntity expectedUser = UserEntity.builder()
+                                            .id(UUID.randomUUID())
+                                            .tenantId(UUID.randomUUID())
+                                            .password("password")
+                                            .active(true)
+                                            .username(username)
+                                            .emailAddress(emailAddress)
+                                            .roles(roles)
+                                            .givenName("John")
+                                            .surname("Doe")
+                                            .build();
         when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
@@ -76,8 +84,17 @@ public class UserDetailsPersistenceServiceTest {
         String emailAddress = "authority.user@example.com";
 
         Set<RoleEntity> roles = new HashSet<>();
-        UserEntity expectedUser = UserEntity.builder().id(UUID.randomUUID()).tenantId(UUID.randomUUID()).password("password").active(true)
-                .username(username).emailAddress(emailAddress).roles(roles).givenName("John").surname("Doe").build();
+        UserEntity expectedUser = UserEntity.builder()
+                                            .id(UUID.randomUUID())
+                                            .tenantId(UUID.randomUUID())
+                                            .password("password")
+                                            .active(true)
+                                            .username(username)
+                                            .emailAddress(emailAddress)
+                                            .roles(roles)
+                                            .givenName("John")
+                                            .surname("Doe")
+                                            .build();
         when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
@@ -104,8 +121,17 @@ public class UserDetailsPersistenceServiceTest {
         roles.add(RoleEntity.builder().name("Admin").build());
         roles.add(RoleEntity.builder().name("User").build());
 
-        UserEntity expectedUser = UserEntity.builder().id(UUID.randomUUID()).tenantId(UUID.randomUUID()).password("password").active(true)
-                .username(username).emailAddress(emailAddress).roles(roles).givenName("John").surname("Doe").build();
+        UserEntity expectedUser = UserEntity.builder()
+                                            .id(UUID.randomUUID())
+                                            .tenantId(UUID.randomUUID())
+                                            .password("password")
+                                            .active(true)
+                                            .username(username)
+                                            .emailAddress(emailAddress)
+                                            .roles(roles)
+                                            .givenName("John")
+                                            .surname("Doe")
+                                            .build();
         when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Set<AuthorityEntity> expectedAuthorities = new HashSet<>();

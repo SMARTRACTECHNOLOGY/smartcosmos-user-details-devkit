@@ -1,17 +1,5 @@
 package net.smartcosmos.cluster.userdetails.resource;
 
-import static net.smartcosmos.test.util.ResourceTestUtil.basicAuth;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -42,10 +30,21 @@ import net.smartcosmos.cluster.userdetails.service.AuthenticationService;
 import net.smartcosmos.security.user.SmartCosmosUser;
 import net.smartcosmos.test.config.ResourceTestConfiguration;
 
+import static net.smartcosmos.test.util.ResourceTestUtil.basicAuth;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebAppConfiguration
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { DevKitUserDetailsService.class, ResourceTestConfiguration.class })
+@SpringApplicationConfiguration(classes = { DevKitUserDetailsService.class, ResourceTestConfiguration.class})
 public class AuthenticationResourceTest {
 
     @Autowired
@@ -62,9 +61,11 @@ public class AuthenticationResourceTest {
     void setConverters(HttpMessageConverter<?>[] converters) {
 
         this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
-                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
+                                                         .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+                                                         .findAny().get();
 
-        Assert.assertNotNull("the JSON message converter must not be null", this.mappingJackson2HttpMessageConverter);
+        Assert.assertNotNull("the JSON message converter must not be null",
+                             this.mappingJackson2HttpMessageConverter);
     }
 
     @Before
@@ -72,7 +73,10 @@ public class AuthenticationResourceTest {
 
         MockitoAnnotations.initMocks(this);
 
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
+        this.mockMvc = MockMvcBuilders
+            .webAppContextSetup(webApplicationContext)
+            .apply(springSecurity())
+            .build();
     }
 
     @After
@@ -86,24 +90,38 @@ public class AuthenticationResourceTest {
     @Test
     public void thatHttpBasicAuthenticationWorks() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder().name("username").credentials("password").build();
 
-        String[] expectedAuthorities = { "https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write" };
-        RestAuthenticateResponse expectedResponseBody = RestAuthenticateResponse.builder().userUrn("userUrn").username("username")
-                .tenantUrn("tenantUrn").authorities(Arrays.asList(expectedAuthorities)).build();
+        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+                                                                 .name("username")
+                                                                 .credentials("password")
+                                                                 .build();
+
+        String[] expectedAuthorities = {"https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write"};
+        RestAuthenticateResponse expectedResponseBody = RestAuthenticateResponse.builder()
+                                                                                .userUrn("userUrn")
+                                                                                .username("username")
+                                                                                .tenantUrn("tenantUrn")
+                                                                                .authorities(Arrays.asList(expectedAuthorities))
+                                                                                .build();
         ResponseEntity expectedResponse = ResponseEntity.ok(expectedResponseBody);
 
         when(authenticationService.authenticate(eq(request), any(SmartCosmosUser.class))).thenReturn(expectedResponse);
 
-        MvcResult mvcResult = mockMvc
-                .perform(post("/authenticate").header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmosclient", "LkRv4Z-=caBcx.zX"))
-                        .content(json(request)).contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON_UTF8)).andExpect(jsonPath("$.userUrn", is("userUrn")))
-                .andExpect(jsonPath("$.username", is("username"))).andExpect(jsonPath("$.tenantUrn", is("tenantUrn")))
-                .andExpect(jsonPath("$.authorities", hasSize(2)))
-                .andExpect(jsonPath("$.authorities[0]", is("https://authorities.smartcosmos.net/things/read")))
-                .andExpect(jsonPath("$.authorities[1]", is("https://authorities.smartcosmos.net/things/write")))
-                .andExpect(jsonPath("$.authorities").isArray()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmosclient", "LkRv4Z-=caBcx.zX"))
+                .content(json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+                                     .andExpect(status().isOk())
+                                     .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                                     .andExpect(jsonPath("$.userUrn", is("userUrn")))
+                                     .andExpect(jsonPath("$.username", is("username")))
+                                     .andExpect(jsonPath("$.tenantUrn", is("tenantUrn")))
+                                     .andExpect(jsonPath("$.authorities", hasSize(2)))
+                                     .andExpect(jsonPath("$.authorities[0]", is("https://authorities.smartcosmos.net/things/read")))
+                                     .andExpect(jsonPath("$.authorities[1]", is("https://authorities.smartcosmos.net/things/write")))
+                                     .andExpect(jsonPath("$.authorities").isArray())
+                                     .andReturn();
 
         verify(authenticationService, times(1)).authenticate(anyObject(), anyObject());
         verifyNoMoreInteractions(authenticationService);
@@ -112,10 +130,18 @@ public class AuthenticationResourceTest {
     @Test
     public void thatHttpBasicAuthenticationMissingAuthorizationFails() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder().name("username").credentials("password").build();
 
-        MvcResult mvcResult = mockMvc.perform(post("/authenticate").content(json(request)).contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnauthorized()).andReturn();
+        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+                                                                 .name("username")
+                                                                 .credentials("password")
+                                                                 .build();
+
+        MvcResult mvcResult = mockMvc.perform(
+            post("/authenticate")
+                .content(json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+                                     .andExpect(status().isUnauthorized())
+                                     .andReturn();
 
         verifyNoMoreInteractions(authenticationService);
     }
@@ -123,16 +149,23 @@ public class AuthenticationResourceTest {
     @Test
     public void thatNonexistentUserAuthenticationFails() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder().name("username").credentials("password").build();
+
+        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+                                                                 .name("username")
+                                                                 .credentials("password")
+                                                                 .build();
 
         ResponseEntity expectedResponse = ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         when(authenticationService.authenticate(eq(request), any(SmartCosmosUser.class))).thenReturn(expectedResponse);
 
-        MvcResult mvcResult = mockMvc
-                .perform(post("/authenticate").header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmosclient", "LkRv4Z-=caBcx.zX"))
-                        .content(json(request)).contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnauthorized()).andReturn();
+        MvcResult mvcResult = mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmosclient", "LkRv4Z-=caBcx.zX"))
+                .content(json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+                                     .andExpect(status().isUnauthorized())
+                                     .andReturn();
 
         verify(authenticationService, times(1)).authenticate(anyObject(), anyObject());
         verifyNoMoreInteractions(authenticationService);
@@ -142,7 +175,8 @@ public class AuthenticationResourceTest {
 
     protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+        this.mappingJackson2HttpMessageConverter.write(o, MediaType.APPLICATION_JSON,
+                                                       mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
 
