@@ -17,9 +17,10 @@ import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 import net.smartcosmos.security.user.SmartCosmosUser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,6 +40,7 @@ public class AuthenticationServiceTest {
 
     @Before
     public void setUp() {
+
     }
 
     @After
@@ -70,14 +72,14 @@ public class AuthenticationServiceTest {
     @Test
     public void thatAuthenticationSucceeds() {
 
-        String[] expectedAuthorities = {"https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write"};
+        String[] expectedAuthorities = { "https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write" };
         UserDetailsResponse expectedResponse = UserDetailsResponse.builder()
-                                                                  .username("user")
-                                                                  .tenantUrn("tenantUrn")
-                                                                  .urn("userUrn")
-                                                                  .passwordHash("passwordHash")
-                                                                  .authorities(Arrays.asList(expectedAuthorities))
-                                                                  .build();
+            .username("user")
+            .tenantUrn("tenantUrn")
+            .urn("userUrn")
+            .passwordHash("passwordHash")
+            .authorities(Arrays.asList(expectedAuthorities))
+            .build();
         when(userDetailsDao.getAuthorities(anyString(), anyString())).thenReturn(Optional.of(expectedResponse));
 
         RestAuthenticateResponse expectedConversionResponse = RestAuthenticateResponse.builder()
@@ -90,9 +92,9 @@ public class AuthenticationServiceTest {
         when(conversionService.convert(eq(expectedResponse), eq(RestAuthenticateResponse.class))).thenReturn(expectedConversionResponse);
 
         RestAuthenticateRequest request = RestAuthenticateRequest.builder()
-                                                                 .credentials("password")
-                                                                 .name("user")
-                                                                 .build();
+            .credentials("password")
+            .name("user")
+            .build();
 
         ResponseEntity<?> response = authenticationService.authenticate(request, user);
 

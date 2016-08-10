@@ -20,11 +20,13 @@ public class ServiceUserAccessSecurityConfiguration extends WebSecurityConfigure
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
         auth.authenticationProvider(serviceUserAccessAuthenticationProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http // @formatter:off
             .csrf()
                 .disable()

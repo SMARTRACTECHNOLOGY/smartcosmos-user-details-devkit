@@ -5,8 +5,8 @@ import org.springframework.format.FormatterRegistrar;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.stereotype.Component;
 
-import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
+import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
 
 @Component
 public class UserDetailsResponseToRestAuthenticateResponseConverter
@@ -26,6 +26,7 @@ public class UserDetailsResponseToRestAuthenticateResponseConverter
 
     @Override
     public void registerFormatters(FormatterRegistry registry) {
+
         registry.addConverter(this);
     }
 }

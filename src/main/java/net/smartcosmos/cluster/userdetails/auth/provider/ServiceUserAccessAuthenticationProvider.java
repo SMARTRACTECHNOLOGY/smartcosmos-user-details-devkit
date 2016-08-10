@@ -2,9 +2,8 @@ package net.smartcosmos.cluster.userdetails.auth.provider;
 
 import java.util.Collection;
 
-import javax.inject.Inject;
-
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -36,8 +35,9 @@ public class ServiceUserAccessAuthenticationProvider implements AuthenticationPr
      *
      * @param serviceUser the Service User properties
      */
-    @Inject
+    @Autowired
     public ServiceUserAccessAuthenticationProvider(ServiceUserProperties serviceUser) {
+
         this.serviceUser = serviceUser;
     }
 
@@ -92,6 +92,7 @@ public class ServiceUserAccessAuthenticationProvider implements AuthenticationPr
      */
     @Override
     public boolean supports(Class<?> authenticationClass) {
+
         return SUPPORTED_AUTHENTICATION.equals(authenticationClass);
     }
 }

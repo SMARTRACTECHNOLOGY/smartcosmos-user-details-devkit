@@ -28,6 +28,7 @@ public class RestAuthenticateResponse {
 
     @ConstructorProperties({ "urn", "username", "passwordHash", "authorities", "tenantUrn" })
     public RestAuthenticateResponse(String userUrn, String username, String passwordHash, Collection<String> authorities, String tenantUrn) {
+
         this.userUrn = userUrn;
         this.username = username;
         this.passwordHash = passwordHash;

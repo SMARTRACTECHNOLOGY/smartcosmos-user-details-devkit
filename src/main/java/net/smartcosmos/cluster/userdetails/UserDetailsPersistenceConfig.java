@@ -24,6 +24,7 @@ public class UserDetailsPersistenceConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
+
         for (FormatterRegistrar registrar : formatterRegistrarMap.values()) {
             registrar.registerFormatters(registry);
         }

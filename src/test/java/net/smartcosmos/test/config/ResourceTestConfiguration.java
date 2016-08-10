@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import net.smartcosmos.cluster.userdetails.service.AuthenticationService;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @Configuration
 public class ResourceTestConfiguration {

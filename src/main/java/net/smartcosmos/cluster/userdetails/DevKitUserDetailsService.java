@@ -20,11 +20,14 @@ import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfi
 public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(DevKitUserDetailsService.class).web(true).run(args);
+
+        new SpringApplicationBuilder(DevKitUserDetailsService.class).web(true)
+            .run(args);
     }
 
     @Bean
     PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 }

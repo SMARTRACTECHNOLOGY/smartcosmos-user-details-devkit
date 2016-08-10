@@ -28,13 +28,16 @@ public class AuthenticationResource {
 
     @Autowired
     public AuthenticationResource(AuthenticationService authenticationService) {
+
         this.authenticationService = authenticationService;
     }
 
     @RequestMapping(value = "authenticate", method = RequestMethod.POST, produces = APPLICATION_JSON_UTF8_VALUE,
                     consumes = APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<?> authenticate(@RequestBody @Valid RestAuthenticateRequest authenticate,
-                                          @AuthenticationPrincipal SmartCosmosUser user){
+    public ResponseEntity<?> authenticate(
+        @RequestBody @Valid RestAuthenticateRequest authenticate,
+        @AuthenticationPrincipal SmartCosmosUser user) {
+
         return authenticationService.authenticate(authenticate, user);
     }
 }

@@ -2,14 +2,13 @@ package net.smartcosmos.cluster.userdetails.dto;
 
 import java.util.List;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 /**
  * DTO representation of serialized {@link UsernamePasswordAuthenticationToken}.
