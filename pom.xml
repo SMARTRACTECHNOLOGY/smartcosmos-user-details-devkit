@@ -11,7 +11,7 @@
         <groupId>net.smartcosmos</groupId>
         <artifactId>smartcosmos-framework-parent</artifactId>
         <version>3.0.0</version>
-        <relativePath />
+        <relativePath></relativePath>
     </parent>
     <artifactId>smartcosmos-user-details-devkit</artifactId>
     <version>3.0.1-SNAPSHOT</version>
