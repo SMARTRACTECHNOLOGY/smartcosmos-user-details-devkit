@@ -10,8 +10,8 @@ Microservice which provides user authorties for OAuth token generation.
 It uses the same database as the https://github.com/SMARTRACTECHNOLOGY/smartcosmos-edge-user-devkit[edge-user-devkit]
  service for user, tenant, role and authority management, see https://github.com/SMARTRACTECHNOLOGY/smartcosmos-user-entity-devkit[user-entity-devkit].
 
-== License
-This is a private licensed repository, and as such, should not be shared publicly.
+== Copyright and License
+Code and documentation copyright 2016 Smartrac Technology Fletcher, Inc.  Code released under link:LICENSE[Apache 2.0 License].
 
 == REST API
 
