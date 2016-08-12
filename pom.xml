@@ -11,10 +11,10 @@
         <groupId>net.smartcosmos</groupId>
         <artifactId>smartcosmos-framework-parent</artifactId>
         <version>3.0.0</version>
-        <relativePath></relativePath>
+        <relativePath />
     </parent>
     <artifactId>smartcosmos-user-details-devkit</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <name>SMART COSMOS Sample User Details Service</name>
     <description>Devkit implementation of user details service for OAuth</description>
 
@@ -109,7 +109,7 @@
         <connection>scm:git:ssh://git@github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git</developerConnection>
         <url>https://github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit/tree/master/</url>
-        <tag>v3.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
