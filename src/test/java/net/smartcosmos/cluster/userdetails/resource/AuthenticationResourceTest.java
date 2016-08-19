@@ -27,7 +27,6 @@ import net.smartcosmos.cluster.userdetails.DevKitUserDetailsService;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateRequest;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
 import net.smartcosmos.cluster.userdetails.service.AuthenticationService;
-import net.smartcosmos.security.user.SmartCosmosUser;
 import net.smartcosmos.test.config.ResourceTestConfiguration;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -107,7 +106,7 @@ public class AuthenticationResourceTest {
             .build();
         ResponseEntity expectedResponse = ResponseEntity.ok(expectedResponseBody);
 
-        when(authenticationService.authenticate(eq(request), any(SmartCosmosUser.class))).thenReturn(expectedResponse);
+        when(authenticationService.authenticate(eq(request))).thenReturn(expectedResponse);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/authenticate")
@@ -125,7 +124,7 @@ public class AuthenticationResourceTest {
             .andExpect(jsonPath("$.authorities").isArray())
             .andReturn();
 
-        verify(authenticationService, times(1)).authenticate(anyObject(), anyObject());
+        verify(authenticationService, times(1)).authenticate(anyObject());
         verifyNoMoreInteractions(authenticationService);
     }
 
@@ -158,7 +157,7 @@ public class AuthenticationResourceTest {
         ResponseEntity expectedResponse = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .build();
 
-        when(authenticationService.authenticate(eq(request), any(SmartCosmosUser.class))).thenReturn(expectedResponse);
+        when(authenticationService.authenticate(eq(request))).thenReturn(expectedResponse);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/authenticate")
@@ -168,7 +167,7 @@ public class AuthenticationResourceTest {
             .andExpect(status().isUnauthorized())
             .andReturn();
 
-        verify(authenticationService, times(1)).authenticate(anyObject(), anyObject());
+        verify(authenticationService, times(1)).authenticate(anyObject());
         verifyNoMoreInteractions(authenticationService);
     }
 

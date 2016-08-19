@@ -18,11 +18,29 @@
     <name>SMART COSMOS Sample User Details Service</name>
     <description>Devkit implementation of user details service for OAuth</description>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>1.0.0.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>net.smartcosmos</groupId>
+                <artifactId>smartcosmos-user-entity-devkit</artifactId>
+                <version>3.0.1-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
@@ -35,7 +53,6 @@
         <dependency>
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-user-entity-devkit</artifactId>
-            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -75,7 +92,6 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.0.0.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>

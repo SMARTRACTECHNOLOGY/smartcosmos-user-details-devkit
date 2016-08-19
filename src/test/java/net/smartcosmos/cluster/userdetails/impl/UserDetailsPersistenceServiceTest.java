@@ -11,6 +11,8 @@ import org.junit.*;
 import org.junit.runner.*;
 import org.mockito.*;
 import org.mockito.runners.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
 import net.smartcosmos.cluster.userdetails.domain.RoleEntity;
@@ -20,8 +22,6 @@ import net.smartcosmos.cluster.userdetails.repository.UserRepository;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,8 +30,15 @@ public class UserDetailsPersistenceServiceTest {
     @Mock
     UserRepository userRepository;
 
-    @InjectMocks
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     UserDetailsPersistenceService userDetailsPersistenceService;
+
+    @Before
+    public void setUp() {
+
+        userDetailsPersistenceService = new UserDetailsPersistenceService(userRepository, passwordEncoder);
+    }
 
     @After
     public void tearDown() throws Exception {
@@ -45,9 +52,16 @@ public class UserDetailsPersistenceServiceTest {
         String username = "authorityTestUser";
         String emailAddress = "authority.user@example.com";
 
+        Set<AuthorityEntity> authorityEntities = new HashSet<>();
+        for (int x = 0; x < 20; x++) {
+            authorityEntities.add(AuthorityEntity.builder()
+                                      .authority("https://authorities.smartcosmos.net/things/" + String.valueOf(x))
+                                      .build());
+        }
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(RoleEntity.builder()
                       .name("Admin")
+                      .authorities(authorityEntities)
                       .build());
         UserEntity expectedUser = UserEntity.builder()
             .id(UUID.randomUUID())
@@ -60,16 +74,7 @@ public class UserDetailsPersistenceServiceTest {
             .givenName("John")
             .surname("Doe")
             .build();
-        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
-
-        Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
-        expectedAuthorities.add(AuthorityEntity.builder()
-                                    .authority("https://authorities.smartcosmos.net/things/read")
-                                    .build());
-        expectedAuthorities.add(AuthorityEntity.builder()
-                                    .authority("https://authorities.smartcosmos.net/things/create")
-                                    .build());
-        when(userRepository.getAuthorities(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(expectedAuthorities));
+        when(userRepository.findByUsernameAndPassword(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "somePassword");
 
@@ -79,19 +84,18 @@ public class UserDetailsPersistenceServiceTest {
         assertFalse(authorities.get()
                         .getAuthorities()
                         .isEmpty());
-        assertEquals(2,
+        assertEquals(20,
                      authorities.get()
                          .getAuthorities()
                          .size());
         assertTrue(authorities.get()
                        .getAuthorities()
-                       .contains("https://authorities.smartcosmos.net/things/read"));
+                       .contains("https://authorities.smartcosmos.net/things/1"));
         assertTrue(authorities.get()
                        .getAuthorities()
-                       .contains("https://authorities.smartcosmos.net/things/create"));
+                       .contains("https://authorities.smartcosmos.net/things/10"));
 
-        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
-        verify(userRepository, times(1)).getAuthorities(anyObject(), anyObject());
+        verify(userRepository, times(1)).findByUsernameAndPassword(anyString(), anyString());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -113,10 +117,7 @@ public class UserDetailsPersistenceServiceTest {
             .givenName("John")
             .surname("Doe")
             .build();
-        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
-
-        Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
-        when(userRepository.getAuthorities(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(expectedAuthorities));
+        when(userRepository.findByUsernameAndPassword(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "somePassword");
 
@@ -127,8 +128,7 @@ public class UserDetailsPersistenceServiceTest {
                        .getAuthorities()
                        .isEmpty());
 
-        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
-        verify(userRepository, times(1)).getAuthorities(anyObject(), anyObject());
+        verify(userRepository, times(1)).findByUsernameAndPassword(anyString(), anyString());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -138,12 +138,27 @@ public class UserDetailsPersistenceServiceTest {
         String username = "multipleRoleAuthorityTestUser";
         String emailAddress = "authority.user@example.com";
 
+        Set<AuthorityEntity> adminAuthorities = new HashSet<>();
+        adminAuthorities.add(AuthorityEntity.builder()
+                                 .authority("https://authorities.smartcosmos.net/things/read")
+                                 .build());
+        adminAuthorities.add(AuthorityEntity.builder()
+                                 .authority("https://authorities.smartcosmos.net/things/create")
+                                 .build());
+
+        Set<AuthorityEntity> userAuthorities = new HashSet<>();
+        userAuthorities.add(AuthorityEntity.builder()
+                                .authority("https://authorities.smartcosmos.net/things/read")
+                                .build());
+
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(RoleEntity.builder()
                       .name("Admin")
+                      .authorities(adminAuthorities)
                       .build());
         roles.add(RoleEntity.builder()
                       .name("User")
+                      .authorities(userAuthorities)
                       .build());
 
         UserEntity expectedUser = UserEntity.builder()
@@ -157,19 +172,7 @@ public class UserDetailsPersistenceServiceTest {
             .givenName("John")
             .surname("Doe")
             .build();
-        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
-
-        Set<AuthorityEntity> expectedAuthorities = new HashSet<>();
-        expectedAuthorities.add(AuthorityEntity.builder()
-                                    .authority("https://authorities.smartcosmos.net/things/read")
-                                    .build());
-        expectedAuthorities.add(AuthorityEntity.builder()
-                                    .authority("https://authorities.smartcosmos.net/things/create")
-                                    .build());
-        expectedAuthorities.add(AuthorityEntity.builder()
-                                    .authority("https://authorities.smartcosmos.net/things/read")
-                                    .build());
-        when(userRepository.getAuthorities(any(UUID.class), any(UUID.class))).thenReturn(Optional.of(expectedAuthorities));
+        when(userRepository.findByUsernameAndPassword(anyString(), anyString())).thenReturn(Optional.of(expectedUser));
 
         Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "somePassword");
 
@@ -190,8 +193,7 @@ public class UserDetailsPersistenceServiceTest {
                        .getAuthorities()
                        .contains("https://authorities.smartcosmos.net/things/create"));
 
-        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
-        verify(userRepository, times(1)).getAuthorities(anyObject(), anyObject());
+        verify(userRepository, times(1)).findByUsernameAndPassword(anyString(), anyString());
         verifyNoMoreInteractions(userRepository);
     }
 
@@ -204,13 +206,13 @@ public class UserDetailsPersistenceServiceTest {
         List<String> roles = new ArrayList<>();
         roles.add("Admin");
 
-        when(userRepository.getUserByCredentials(anyString(), anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByUsernameAndPassword(anyString(), anyString())).thenReturn(Optional.empty());
 
         Optional<UserDetailsResponse> authorities = userDetailsPersistenceService.getAuthorities(username, "invalid");
 
         assertFalse(authorities.isPresent());
 
-        verify(userRepository, times(1)).getUserByCredentials(anyString(), anyString());
+        verify(userRepository, times(1)).findByUsernameAndPassword(anyString(), anyString());
         verifyNoMoreInteractions(userRepository);
     }
 }
