@@ -61,8 +61,12 @@ public class ServiceUserAccessAuthenticationProvider implements AuthenticationPr
 
         if (credentials instanceof String) {
             String password = (String) credentials;
-            if (StringUtils.equals(username, serviceUser.getName())
-                && StringUtils.equals(password, serviceUser.getPassword())) {
+            if (StringUtils.equals(username,
+                                   serviceUser.getUser()
+                                       .getName())
+                && StringUtils.equals(password,
+                                      serviceUser.getUser()
+                                          .getPassword())) {
 
                 SmartCosmosUser user;
                 if (principal instanceof SmartCosmosUser) {

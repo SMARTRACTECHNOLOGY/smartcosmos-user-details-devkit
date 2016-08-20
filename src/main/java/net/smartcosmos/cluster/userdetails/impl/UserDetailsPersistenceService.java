@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,12 +39,15 @@ public class UserDetailsPersistenceService implements UserDetailsDao {
             return Optional.empty();
         }
 
-        Optional<UserEntity> userOptional = userRepository.findByUsernameAndPassword(username, passwordEncoder.encode(password));
+        Optional<UserEntity> userOptional = userRepository.findByUsernameIgnoreCase(username);
         if (!userOptional.isPresent()) {
             return Optional.empty();
         }
 
         UserEntity user = userOptional.get();
+        if (!passwordEncoder.matches(user.getPassword(), password)) {
+            throw new UnauthorizedUserException("Password invalid for username " + username);
+        }
         Set<String> authorities = user.getRoles()
             .stream()
             .map(r -> r.getAuthorities()
