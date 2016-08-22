@@ -15,7 +15,7 @@
     </parent>
     <artifactId>smartcosmos-user-details-devkit</artifactId>
     <version>3.0.1-SNAPSHOT</version>
-    <name>SMART COSMOS Sample User Details Service</name>
+    <name>SMART COSMOS DevKit User Details Service</name>
     <description>Devkit implementation of user details service for OAuth</description>
 
     <dependencyManagement>
@@ -32,12 +32,12 @@
             </dependency>
             <dependency>
                 <groupId>net.smartcosmos</groupId>
-                <artifactId>smartcosmos-user-entity-devkit</artifactId>
+                <artifactId>smartcosmos-database-devkit</artifactId>
                 <version>3.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>net.smartcosmos</groupId>
-                <artifactId>smartcosmos-database-devkit</artifactId>
+                <artifactId>smartcosmos-user-entity-devkit</artifactId>
                 <version>3.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -64,6 +64,11 @@
             <artifactId>smartcosmos-user-entity-devkit</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
@@ -77,11 +82,6 @@
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-framework-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

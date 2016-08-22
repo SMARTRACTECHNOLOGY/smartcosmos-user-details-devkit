@@ -110,7 +110,7 @@ public class AuthenticationResourceTest {
 
         MvcResult mvcResult = mockMvc.perform(
             post("/authenticate")
-                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmosclient", "LkRv4Z-=caBcx.zX"))
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
                 .content(json(request))
                 .contentType(APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
@@ -161,13 +161,13 @@ public class AuthenticationResourceTest {
 
         MvcResult mvcResult = mockMvc.perform(
             post("/authenticate")
-                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmosclient", "LkRv4Z-=caBcx.zX"))
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
                 .content(json(request))
                 .contentType(APPLICATION_JSON_UTF8))
             .andExpect(status().isUnauthorized())
             .andReturn();
 
-        verify(authenticationService, times(1)).authenticate(anyObject());
+        verify(authenticationService, times(1)).authenticate(eq(request));
         verifyNoMoreInteractions(authenticationService);
     }
 

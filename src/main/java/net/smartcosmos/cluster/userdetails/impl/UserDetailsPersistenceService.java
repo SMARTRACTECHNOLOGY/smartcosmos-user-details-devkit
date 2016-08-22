@@ -36,12 +36,12 @@ public class UserDetailsPersistenceService implements UserDetailsDao {
     public Optional<UserDetailsResponse> getAuthorities(String username, String password) {
 
         if (StringUtils.isEmpty(password)) {
-            return Optional.empty();
+            throw new InternalAuthenticationServiceException("Password blank.");
         }
 
         Optional<UserEntity> userOptional = userRepository.findByUsernameIgnoreCase(username);
         if (!userOptional.isPresent()) {
-            return Optional.empty();
+            throw new InternalAuthenticationServiceException("Unknown username " + username);
         }
 
         UserEntity user = userOptional.get();
