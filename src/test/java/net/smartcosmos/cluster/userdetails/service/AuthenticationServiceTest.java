@@ -60,7 +60,7 @@ public class AuthenticationServiceTest {
             .name("user")
             .build();
 
-        ResponseEntity<?> response = authenticationService.authenticate(request, user);
+        ResponseEntity<?> response = authenticationService.authenticate(request);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
@@ -96,7 +96,7 @@ public class AuthenticationServiceTest {
             .name("user")
             .build();
 
-        ResponseEntity<?> response = authenticationService.authenticate(request, user);
+        ResponseEntity<?> response = authenticationService.authenticate(request);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody() instanceof RestAuthenticateResponse);

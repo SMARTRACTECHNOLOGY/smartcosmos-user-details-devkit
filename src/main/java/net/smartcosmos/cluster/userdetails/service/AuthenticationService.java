@@ -7,12 +7,12 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import net.smartcosmos.cluster.userdetails.dao.UserDetailsDao;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateRequest;
 import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
 import net.smartcosmos.cluster.userdetails.dto.UserDetailsResponse;
-import net.smartcosmos.security.user.SmartCosmosUser;
 
 @Service
 public class AuthenticationService {
@@ -27,7 +27,12 @@ public class AuthenticationService {
         this.conversionService = conversionService;
     }
 
-    public ResponseEntity<?> authenticate(RestAuthenticateRequest authenticate, SmartCosmosUser user) {
+    public ResponseEntity<?> authenticate(RestAuthenticateRequest authenticate) {
+
+        if (authenticate == null || StringUtils.isEmpty(authenticate.getCredentials())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .build();
+        }
 
         Optional<UserDetailsResponse> entity = userDetailsDao.getAuthorities(authenticate.getName(), authenticate.getCredentials());
         if (entity.isPresent()) {

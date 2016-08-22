@@ -15,18 +15,45 @@
     </parent>
     <artifactId>smartcosmos-user-details-devkit</artifactId>
     <version>3.0.1-SNAPSHOT</version>
-    <name>SMART COSMOS Sample User Details Service</name>
+    <name>SMART COSMOS DevKit User Details Service</name>
     <description>Devkit implementation of user details service for OAuth</description>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>1.0.0.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>net.smartcosmos</groupId>
+                <artifactId>smartcosmos-database-devkit</artifactId>
+                <version>3.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>net.smartcosmos</groupId>
+                <artifactId>smartcosmos-user-entity-devkit</artifactId>
+                <version>3.0.1-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
         </dependency>
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.smartcosmos</groupId>
+            <artifactId>smartcosmos-database-devkit</artifactId>
         </dependency>
         <dependency>
             <groupId>net.smartcosmos</groupId>
@@ -35,7 +62,11 @@
         <dependency>
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-user-entity-devkit</artifactId>
-            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -48,52 +79,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-library</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path-assert</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>1.0.0.Final</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-framework-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.restassured</groupId>
-            <artifactId>spring-mock-mvc</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>

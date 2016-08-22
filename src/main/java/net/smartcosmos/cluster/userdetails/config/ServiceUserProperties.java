@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
@@ -14,6 +15,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("smartcosmos.security.resource.user-details")
 public class ServiceUserProperties {
 
-    private String name = "smartcosmosclient";
-    private String password = "LkRv4Z-=caBcx.zX";
+    private SecurityProperties.User user = new SecurityProperties.User();
 }
