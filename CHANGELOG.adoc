@@ -1,0 +1,15 @@
+= SMART COSMOS DevKit User Details Service Release Notes
+
+== UNRELEASED
+
+=== New Features
+
+* OBJECTS-980 Add Prometheus-compatible `/metrics` endpoint
+
+=== Bugfixes & Improvements
+
+None.
+
+== Release 3.0.0 (August 12, 2016)
+
+Initial release.

@@ -11,10 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import net.smartcosmos.annotation.EnableSmartCosmosEvents;
 import net.smartcosmos.annotation.EnableSmartCosmosExtension;
+import net.smartcosmos.annotation.EnableSmartCosmosMonitoring;
 import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfiguration;
 
 @EnableSmartCosmosExtension
 @EnableSmartCosmosEvents
+@EnableSmartCosmosMonitoring
 @Import(ServiceUserAccessSecurityConfiguration.class)
 @Slf4j
 public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
