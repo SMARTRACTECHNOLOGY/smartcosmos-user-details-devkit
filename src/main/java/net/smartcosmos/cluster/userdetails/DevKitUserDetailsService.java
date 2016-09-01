@@ -15,6 +15,7 @@ import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfi
 
 @EnableSmartCosmosExtension
 @EnableSmartCosmosEvents
+@EnableSmartCosmosMonitoring
 @Import(ServiceUserAccessSecurityConfiguration.class)
 @Slf4j
 public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {

@@ -5,12 +5,13 @@
     267 Cane Creek Rd, Fletcher, NC, 28732, USA
     All Rights Reserved.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.smartcosmos</groupId>
         <artifactId>smartcosmos-framework-parent</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1-SNAPSHOT</version>
         <relativePath></relativePath>
     </parent>
     <artifactId>smartcosmos-user-details-devkit</artifactId>
@@ -28,7 +29,6 @@
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
-                <version>1.0.0.Final</version>
             </dependency>
             <dependency>
                 <groupId>net.smartcosmos</groupId>
@@ -58,6 +58,10 @@
         <dependency>
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.smartcosmos</groupId>
+            <artifactId>smartcosmos-framework-monitoring</artifactId>
         </dependency>
         <dependency>
             <groupId>net.smartcosmos</groupId>
