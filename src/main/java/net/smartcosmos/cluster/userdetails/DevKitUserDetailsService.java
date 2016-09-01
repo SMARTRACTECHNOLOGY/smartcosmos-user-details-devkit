@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import net.smartcosmos.annotation.EnableSmartCosmosEvents;
 import net.smartcosmos.annotation.EnableSmartCosmosExtension;
+import net.smartcosmos.annotation.EnableSmartCosmosMonitoring;
 import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfiguration;
 
 @EnableSmartCosmosExtension
