@@ -5,6 +5,7 @@
 === New Features
 
 * OBJECTS-980 Add Prometheus-compatible `/metrics` endpoint
+* PROFILES-667: add zipkin starter for distributed tracing
 
 === Bugfixes & Improvements
 
