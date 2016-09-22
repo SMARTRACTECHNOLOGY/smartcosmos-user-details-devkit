@@ -3,16 +3,16 @@ package net.smartcosmos.test.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import net.smartcosmos.cluster.userdetails.service.AuthenticationService;
+import net.smartcosmos.cluster.userdetails.service.AuthenticateUserService;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 @Configuration
 public class ResourceTestConfiguration {
 
     @Bean
-    public AuthenticationService authenticationService() {
+    public AuthenticateUserService authenticateUserServiceDevKit() {
 
-        return mock(AuthenticationService.class);
+        return mock(AuthenticateUserService.class);
     }
 }

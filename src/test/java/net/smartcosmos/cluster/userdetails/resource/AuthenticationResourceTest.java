@@ -24,9 +24,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import net.smartcosmos.cluster.userdetails.DevKitUserDetailsService;
-import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateRequest;
-import net.smartcosmos.cluster.userdetails.dto.RestAuthenticateResponse;
-import net.smartcosmos.cluster.userdetails.service.AuthenticationService;
+import net.smartcosmos.cluster.userdetails.domain.AuthenticateUserRequest;
+import net.smartcosmos.cluster.userdetails.domain.UserDetails;
+import net.smartcosmos.cluster.userdetails.service.AuthenticateUserService;
 import net.smartcosmos.test.config.ResourceTestConfiguration;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -55,7 +55,7 @@ import static net.smartcosmos.test.util.ResourceTestUtil.basicAuth;
 public class AuthenticationResourceTest {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticateUserService authenticationService;
 
     // region Test Setup
 
@@ -99,13 +99,13 @@ public class AuthenticationResourceTest {
     @Test
     public void thatHttpBasicAuthenticationWorks() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
             .name("username")
             .credentials("password")
             .build();
 
         String[] expectedAuthorities = { "https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write" };
-        RestAuthenticateResponse expectedResponseBody = RestAuthenticateResponse.builder()
+        UserDetails expectedResponseBody = UserDetails.builder()
             .userUrn("userUrn")
             .username("username")
             .tenantUrn("tenantUrn")
@@ -113,7 +113,7 @@ public class AuthenticationResourceTest {
             .build();
         ResponseEntity expectedResponse = ResponseEntity.ok(expectedResponseBody);
 
-        when(authenticationService.authenticate(eq(request))).thenReturn(expectedResponse);
+        when(authenticationService.authenticateUser(eq(request))).thenReturn(expectedResponse);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/authenticate")
@@ -131,14 +131,14 @@ public class AuthenticationResourceTest {
             .andExpect(jsonPath("$.authorities").isArray())
             .andReturn();
 
-        verify(authenticationService, times(1)).authenticate(anyObject());
+        verify(authenticationService, times(1)).authenticateUser(anyObject());
         verifyNoMoreInteractions(authenticationService);
     }
 
     @Test
     public void thatHttpBasicAuthenticationMissingAuthorizationFails() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
             .name("username")
             .credentials("password")
             .build();
@@ -156,7 +156,7 @@ public class AuthenticationResourceTest {
     @Test
     public void thatNonexistentUserAuthenticationFails() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
             .name("username")
             .credentials("password")
             .build();
@@ -164,7 +164,7 @@ public class AuthenticationResourceTest {
         ResponseEntity expectedResponse = ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .build();
 
-        when(authenticationService.authenticate(eq(request))).thenReturn(expectedResponse);
+        when(authenticationService.authenticateUser(eq(request))).thenReturn(expectedResponse);
 
         MvcResult mvcResult = mockMvc.perform(
             post("/authenticate")
@@ -174,14 +174,14 @@ public class AuthenticationResourceTest {
             .andExpect(status().isUnauthorized())
             .andReturn();
 
-        verify(authenticationService, times(1)).authenticate(eq(request));
+        verify(authenticationService, times(1)).authenticateUser(eq(request));
         verifyNoMoreInteractions(authenticationService);
     }
 
     @Test
     public void thatMissingCredentialsRequestFails() throws Exception {
 
-        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
             .build();
 
         MvcResult mvcResult = mockMvc.perform(
