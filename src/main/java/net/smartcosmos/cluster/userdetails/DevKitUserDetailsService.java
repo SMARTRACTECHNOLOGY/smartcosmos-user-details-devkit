@@ -2,10 +2,12 @@ package net.smartcosmos.cluster.userdetails;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -18,9 +20,12 @@ import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfi
 @EnableSmartCosmosExtension
 @EnableSmartCosmosEvents
 @EnableSmartCosmosMonitoring
+@EnableJpaRepositories
+@EnableJpaAuditing
+@EntityScan
 @Import(ServiceUserAccessSecurityConfiguration.class)
 @Slf4j
-public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
+public class DevKitUserDetailsService {
 
     public static void main(String[] args) {
 
