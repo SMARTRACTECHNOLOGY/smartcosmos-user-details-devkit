@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 /**
@@ -28,7 +29,9 @@ public class RestAuthenticateRequest {
 
     private String principal;
 
+    @NotEmpty
     private String credentials;
 
+    @NotEmpty
     private String name;
 }

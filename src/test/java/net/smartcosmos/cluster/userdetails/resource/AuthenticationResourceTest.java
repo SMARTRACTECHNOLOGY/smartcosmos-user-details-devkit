@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.*;
-import org.junit.runner.*;
+import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -31,7 +31,14 @@ import net.smartcosmos.test.config.ResourceTestConfiguration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -169,6 +176,23 @@ public class AuthenticationResourceTest {
 
         verify(authenticationService, times(1)).authenticate(eq(request));
         verifyNoMoreInteractions(authenticationService);
+    }
+
+    @Test
+    public void thatMissingCredentialsRequestFails() throws Exception {
+
+        RestAuthenticateRequest request = RestAuthenticateRequest.builder()
+            .build();
+
+        MvcResult mvcResult = mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andReturn();
+
+        verifyZeroInteractions(authenticationService);
     }
 
     // region Utilities
