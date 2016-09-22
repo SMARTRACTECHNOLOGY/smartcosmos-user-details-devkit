@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import net.smartcosmos.annotation.EnableSmartCosmosEvents;
 import net.smartcosmos.annotation.EnableSmartCosmosExtension;
@@ -31,5 +32,11 @@ public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAuto
     PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public javax.validation.Validator localValidatorFactoryBean() {
+
+        return new LocalValidatorFactoryBean();
     }
 }
