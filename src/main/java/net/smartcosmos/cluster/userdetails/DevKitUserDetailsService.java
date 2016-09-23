@@ -2,34 +2,27 @@ package net.smartcosmos.cluster.userdetails;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import net.smartcosmos.annotation.EnableSmartCosmosEvents;
 import net.smartcosmos.annotation.EnableSmartCosmosExtension;
 import net.smartcosmos.annotation.EnableSmartCosmosMonitoring;
-import net.smartcosmos.cluster.userdetails.config.ServiceUserAccessSecurityConfiguration;
 
 @EnableSmartCosmosExtension
 @EnableSmartCosmosEvents
 @EnableSmartCosmosMonitoring
-@Import(ServiceUserAccessSecurityConfiguration.class)
+@EnableJpaRepositories
+@EnableJpaAuditing
+@EntityScan
 @Slf4j
-public class DevKitUserDetailsService extends WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
+public class DevKitUserDetailsService {
 
     public static void main(String[] args) {
 
         new SpringApplicationBuilder(DevKitUserDetailsService.class).web(true)
             .run(args);
-    }
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-
-        return new BCryptPasswordEncoder();
     }
 }

@@ -9,7 +9,7 @@
 
 === Bugfixes & Improvements
 
-None.
+* OBJECTS-1027 User Details Services return 401 Unauthorized for both wrong Basic Auth service credentials and miss for actual user credentials
 
 == Release 3.0.0 (August 12, 2016)
 

@@ -54,6 +54,17 @@ POST /authenticate
 }
 ----
 
+----
+400 Bad Request
+----
+[source,json]
+----
+{
+    "code": 1,
+    "message": "Invalid username or password"
+}
+----
+
 == Configuration
 
 The user details service needs to be properly configured for the following purposes:
