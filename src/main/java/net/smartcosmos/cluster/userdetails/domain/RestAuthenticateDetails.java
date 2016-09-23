@@ -14,6 +14,9 @@ import lombok.ToString;
 @ToString(exclude = "password")
 public class RestAuthenticateDetails {
 
+    private static final int VERSION = 1;
+    private final int version = VERSION;
+
     @JsonProperty("grant_type")
     private String grantType;
 

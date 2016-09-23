@@ -21,6 +21,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @ToString(exclude = "credentials")
 public class AuthenticateUserRequest {
 
+    private static final int VERSION = 1;
+    private final int version = VERSION;
+
     private RestAuthenticateDetails details;
 
     private List<String> authorities;

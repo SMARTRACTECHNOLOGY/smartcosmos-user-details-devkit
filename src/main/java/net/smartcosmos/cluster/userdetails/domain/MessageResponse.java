@@ -8,10 +8,10 @@ import lombok.Data;
 /**
  * Data Transfer Object for REST code/message responses.
  */
-@JsonIgnoreProperties({ "version" })
 @Data
 @Builder
 @AllArgsConstructor
+@JsonIgnoreProperties({ "version" })
 public class MessageResponse {
 
     /**

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -19,7 +20,11 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Data
 @ToString(exclude = "passwordHash")
+@JsonIgnoreProperties({ "version" })
 public class UserDetails {
+
+    private static final int VERSION = 1;
+    private final int version = VERSION;
 
     @NotEmpty
     private final String tenantUrn;
