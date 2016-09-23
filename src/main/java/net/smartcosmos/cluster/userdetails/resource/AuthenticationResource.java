@@ -25,7 +25,7 @@ public class AuthenticationResource {
     @Autowired
     public AuthenticationResource(AuthenticateUserService authenticateUserService) {
 
-        this.service = authenticateUserService;
+        service = authenticateUserService;
     }
 
     @RequestMapping(value = "authenticate",
