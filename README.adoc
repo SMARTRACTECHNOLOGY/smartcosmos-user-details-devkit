@@ -43,7 +43,7 @@ POST /authenticate
 [source,json]
 ----
 {
-    "urn": "urn:user:uuid:68a76616-3748-4bc2-93c1-3940b47abb7f",
+    "userUrn": "urn:user:uuid:68a76616-3748-4bc2-93c1-3940b47abb7f",
     "username": "bob",
     "passwordHash": "",
     "authorities": [
