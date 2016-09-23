@@ -61,7 +61,7 @@ POST /authenticate
 ----
 {
     "code": 1,
-    "message": "Unknown user bob"
+    "message": "Invalid username or password"
 }
 ----
 

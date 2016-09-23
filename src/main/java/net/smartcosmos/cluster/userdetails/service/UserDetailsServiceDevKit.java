@@ -51,12 +51,12 @@ public class UserDetailsServiceDevKit implements UserDetailsService {
 
         Optional<UserEntity> userOptional = userRepository.findByUsernameIgnoreCase(username);
         if (!userOptional.isPresent()) {
-            throw new UsernameNotFoundException(String.format("Unknown user %s", username));
+            throw new UsernameNotFoundException("Invalid username or password");
         }
 
         UserEntity user = userOptional.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException(String.format("Invalid password for user %s", username));
+            throw new BadCredentialsException("Invalid username or password");
         }
 
         return conversionService.convert(user, UserDetails.class);
