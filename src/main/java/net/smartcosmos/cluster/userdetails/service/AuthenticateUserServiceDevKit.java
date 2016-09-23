@@ -42,6 +42,7 @@ public class AuthenticateUserServiceDevKit implements AuthenticateUserService {
             return ResponseEntity.badRequest()
                 .body(new MessageResponse(CODE_ERROR, "Invalid data returned"));
         } catch (AuthenticationException e) {
+            log.info("Authenticating user {} failed. Request was {}", request.getName(), request);
             MessageResponse messageResponse = new MessageResponse(CODE_ERROR, e.getMessage());
             return ResponseEntity.badRequest()
                 .body(messageResponse);

@@ -2,11 +2,11 @@ package net.smartcosmos.cluster.userdetails.domain;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,10 +15,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
  * DTO representation of serialized {@link UsernamePasswordAuthenticationToken}.
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@ToString(exclude = "credentials")
 public class AuthenticateUserRequest {
 
     private RestAuthenticateDetails details;
