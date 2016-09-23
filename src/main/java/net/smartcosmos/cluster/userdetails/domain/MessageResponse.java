@@ -14,6 +14,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class MessageResponse {
 
+    /**
+     * General error code for JSON responses.
+     */
+    public static final int CODE_ERROR = 1;
+
     private static final int VERSION = 1;
     private final int version = VERSION;
 
