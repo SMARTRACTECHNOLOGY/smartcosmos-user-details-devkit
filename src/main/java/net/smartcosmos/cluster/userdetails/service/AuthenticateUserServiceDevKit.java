@@ -8,10 +8,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import net.smartcosmos.cluster.userdetails.domain.AuthenticateUserRequest;
-import net.smartcosmos.cluster.userdetails.domain.MessageResponse;
 import net.smartcosmos.cluster.userdetails.domain.UserDetails;
 
-import static net.smartcosmos.cluster.userdetails.domain.MessageResponse.CODE_ERROR;
+import static net.smartcosmos.cluster.userdetails.util.ResponseEntityFactory.invalidDataReturned;
+import static net.smartcosmos.cluster.userdetails.util.ResponseEntityFactory.invalidUsernameOrPassword;
+import static net.smartcosmos.cluster.userdetails.util.ResponseEntityFactory.success;
 
 /**
  * Default implementation of the user authentication service.
@@ -36,16 +37,13 @@ public class AuthenticateUserServiceDevKit implements AuthenticateUserService {
 
             if (userDetailsService.isValid(userDetails)) {
                 log.info("Validation of authentication response for user {} : valid", request.getName());
-                return ResponseEntity.ok(userDetails);
+                return success(userDetails);
             }
             log.info("Validation of authentication response for user {} : invalid", request.getName());
-            return ResponseEntity.badRequest()
-                .body(new MessageResponse(CODE_ERROR, "Invalid data returned"));
+            return invalidDataReturned();
         } catch (AuthenticationException e) {
             log.info("Authenticating user {} failed. Request was {}", request.getName(), request);
-            MessageResponse messageResponse = new MessageResponse(CODE_ERROR, e.getMessage());
-            return ResponseEntity.badRequest()
-                .body(messageResponse);
+            return invalidUsernameOrPassword();
         }
     }
 }

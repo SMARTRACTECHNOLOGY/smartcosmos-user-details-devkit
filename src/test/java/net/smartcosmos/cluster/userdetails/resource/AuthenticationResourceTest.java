@@ -1,6 +1,7 @@
 package net.smartcosmos.cluster.userdetails.resource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.*;
@@ -46,6 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static net.smartcosmos.cluster.userdetails.domain.MessageResponse.CODE_ERROR;
 import static net.smartcosmos.test.util.ResourceTestUtil.basicAuth;
 
 @WebAppConfiguration
@@ -190,9 +192,115 @@ public class AuthenticationResourceTest {
                 .content(json(request))
                 .contentType(APPLICATION_JSON_UTF8))
             .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code", is(CODE_ERROR)))
+            .andExpect(jsonPath("$.message").isString())
             .andReturn();
 
         verifyZeroInteractions(authenticationService);
+    }
+
+    @Test
+    public void thatMissingUsernameReturnsBadRequest() throws Exception {
+
+        final String usernameUnderTest = null;
+        final String passwordUnderTest = "hotpassword";
+
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+            .authorities(new ArrayList<>())
+            .authenticated(false)
+            .principal(usernameUnderTest)
+            .credentials(passwordUnderTest)
+            .name(usernameUnderTest)
+            .build();
+
+        MvcResult mvcResult = this.mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(this.json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.code", is(CODE_ERROR)))
+            .andExpect(jsonPath("$.message").isString())
+            .andReturn();
+    }
+
+    @Test
+    public void thatEmptyUsernameReturnsBadRequest() throws Exception {
+
+        final String usernameUnderTest = "";
+        final String passwordUnderTest = "hotpassword";
+
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+            .authorities(new ArrayList<>())
+            .authenticated(false)
+            .principal(usernameUnderTest)
+            .credentials(passwordUnderTest)
+            .name(usernameUnderTest)
+            .build();
+
+        MvcResult mvcResult = this.mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(this.json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.code", is(CODE_ERROR)))
+            .andExpect(jsonPath("$.message").isString())
+            .andReturn();
+    }
+
+    @Test
+    public void thatMissingPasswordReturnsBadRequest() throws Exception {
+
+        final String usernameUnderTest = "jules";
+        final String passwordUnderTest = null;
+
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+            .authorities(new ArrayList<>())
+            .authenticated(false)
+            .principal(usernameUnderTest)
+            .credentials(passwordUnderTest)
+            .name(usernameUnderTest)
+            .build();
+
+        MvcResult mvcResult = this.mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(this.json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.code", is(CODE_ERROR)))
+            .andExpect(jsonPath("$.message").isString())
+            .andReturn();
+    }
+
+    @Test
+    public void thatEmptyPasswordReturnsBadRequest() throws Exception {
+
+        final String usernameUnderTest = "jules";
+        final String passwordUnderTest = "";
+
+        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+            .authorities(new ArrayList<>())
+            .authenticated(false)
+            .principal(usernameUnderTest)
+            .credentials(passwordUnderTest)
+            .name(usernameUnderTest)
+            .build();
+
+        MvcResult mvcResult = this.mockMvc.perform(
+            post("/authenticate")
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(this.json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.code", is(CODE_ERROR)))
+            .andExpect(jsonPath("$.message").isString())
+            .andReturn();
     }
 
     // region Utilities

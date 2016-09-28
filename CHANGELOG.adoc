@@ -10,6 +10,7 @@
 === Bugfixes & Improvements
 
 * OBJECTS-1027 User Details Services return 401 Unauthorized for both wrong Basic Auth service credentials and miss for actual user credentials
+* OBJECTS-1034 Invalid User Details Request results in Internal Server Error response from the Auth server
 
 == Release 3.0.0 (August 12, 2016)
 

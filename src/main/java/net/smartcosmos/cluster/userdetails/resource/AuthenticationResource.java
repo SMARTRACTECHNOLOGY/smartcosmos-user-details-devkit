@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +17,8 @@ import net.smartcosmos.cluster.userdetails.domain.AuthenticateUserRequest;
 import net.smartcosmos.cluster.userdetails.service.AuthenticateUserService;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+
+import static net.smartcosmos.cluster.userdetails.util.ResponseEntityFactory.invalidUsernameOrPassword;
 
 @Slf4j
 @SmartCosmosRdao
@@ -35,5 +39,11 @@ public class AuthenticationResource {
     public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticateUserRequest requestBody) {
 
         return service.authenticateUser(requestBody);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> errorResponse() {
+
+        return invalidUsernameOrPassword();
     }
 }
