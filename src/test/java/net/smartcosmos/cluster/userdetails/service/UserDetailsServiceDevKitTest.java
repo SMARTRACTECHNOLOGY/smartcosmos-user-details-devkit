@@ -21,9 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import net.smartcosmos.cluster.userdetails.converter.UserEntityToUserDetailsConverter;
 import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
 import net.smartcosmos.cluster.userdetails.domain.RoleEntity;
-import net.smartcosmos.cluster.userdetails.domain.UserDetails;
 import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.repository.UserRepository;
+import net.smartcosmos.userdetails.domain.UserDetails;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;

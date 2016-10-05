@@ -8,9 +8,9 @@ import org.junit.*;
 
 import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
 import net.smartcosmos.cluster.userdetails.domain.RoleEntity;
-import net.smartcosmos.cluster.userdetails.domain.UserDetails;
 import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.util.UuidUtil;
+import net.smartcosmos.userdetails.domain.UserDetails;
 
 import static org.junit.Assert.*;
 

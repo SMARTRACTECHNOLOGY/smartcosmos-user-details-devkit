@@ -25,10 +25,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import net.smartcosmos.cluster.userdetails.DevKitUserDetailsService;
-import net.smartcosmos.cluster.userdetails.domain.AuthenticateUserRequest;
-import net.smartcosmos.cluster.userdetails.domain.UserDetails;
-import net.smartcosmos.cluster.userdetails.service.AuthenticateUserService;
 import net.smartcosmos.test.config.ResourceTestConfiguration;
+import net.smartcosmos.userdetails.domain.UserDetails;
+import net.smartcosmos.userdetails.domain.rest.AuthenticateRequest;
+import net.smartcosmos.userdetails.service.AuthenticateUserService;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static net.smartcosmos.cluster.userdetails.domain.MessageResponse.CODE_ERROR;
+import static net.smartcosmos.domain.rest.ErrorResponse.CODE_ERROR;
 import static net.smartcosmos.test.util.ResourceTestUtil.basicAuth;
 
 @WebAppConfiguration
@@ -101,7 +101,7 @@ public class AuthenticationResourceTest {
     @Test
     public void thatHttpBasicAuthenticationWorks() throws Exception {
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .name("username")
             .credentials("password")
             .build();
@@ -140,7 +140,7 @@ public class AuthenticationResourceTest {
     @Test
     public void thatHttpBasicAuthenticationMissingAuthorizationFails() throws Exception {
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .name("username")
             .credentials("password")
             .build();
@@ -158,7 +158,7 @@ public class AuthenticationResourceTest {
     @Test
     public void thatNonexistentUserAuthenticationFails() throws Exception {
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .name("username")
             .credentials("password")
             .build();
@@ -183,7 +183,7 @@ public class AuthenticationResourceTest {
     @Test
     public void thatMissingCredentialsRequestFails() throws Exception {
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .build();
 
         MvcResult mvcResult = mockMvc.perform(
@@ -205,7 +205,7 @@ public class AuthenticationResourceTest {
         final String usernameUnderTest = null;
         final String passwordUnderTest = "hotpassword";
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .authorities(new ArrayList<>())
             .authenticated(false)
             .principal(usernameUnderTest)
@@ -231,7 +231,7 @@ public class AuthenticationResourceTest {
         final String usernameUnderTest = "";
         final String passwordUnderTest = "hotpassword";
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .authorities(new ArrayList<>())
             .authenticated(false)
             .principal(usernameUnderTest)
@@ -257,7 +257,7 @@ public class AuthenticationResourceTest {
         final String usernameUnderTest = "jules";
         final String passwordUnderTest = null;
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .authorities(new ArrayList<>())
             .authenticated(false)
             .principal(usernameUnderTest)
@@ -283,7 +283,7 @@ public class AuthenticationResourceTest {
         final String usernameUnderTest = "jules";
         final String passwordUnderTest = "";
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .authorities(new ArrayList<>())
             .authenticated(false)
             .principal(usernameUnderTest)

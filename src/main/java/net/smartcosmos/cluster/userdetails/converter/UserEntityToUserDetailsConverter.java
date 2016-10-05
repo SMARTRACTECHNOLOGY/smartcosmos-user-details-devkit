@@ -9,9 +9,9 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import net.smartcosmos.cluster.userdetails.domain.AuthorityEntity;
-import net.smartcosmos.cluster.userdetails.domain.UserDetails;
 import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.util.UuidUtil;
+import net.smartcosmos.userdetails.domain.UserDetails;
 
 @Component
 public class UserEntityToUserDetailsConverter implements Converter<UserEntity, UserDetails> {

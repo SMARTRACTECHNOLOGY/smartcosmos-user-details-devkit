@@ -17,9 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import net.smartcosmos.cluster.userdetails.domain.UserDetails;
 import net.smartcosmos.cluster.userdetails.domain.UserEntity;
 import net.smartcosmos.cluster.userdetails.repository.UserRepository;
+import net.smartcosmos.userdetails.domain.UserDetails;
+import net.smartcosmos.userdetails.service.UserDetailsService;
 
 @Slf4j
 @Service
