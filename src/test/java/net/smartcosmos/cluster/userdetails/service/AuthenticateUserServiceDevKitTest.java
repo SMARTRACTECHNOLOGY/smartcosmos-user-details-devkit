@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import net.smartcosmos.cluster.userdetails.domain.AuthenticateUserRequest;
-import net.smartcosmos.cluster.userdetails.domain.UserDetails;
+import net.smartcosmos.userdetails.domain.UserDetails;
+import net.smartcosmos.userdetails.domain.rest.AuthenticateRequest;
+import net.smartcosmos.userdetails.service.AuthenticateUserServiceDefault;
+import net.smartcosmos.userdetails.service.UserDetailsService;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
@@ -31,7 +33,7 @@ public class AuthenticateUserServiceDevKitTest {
     UserDetailsService userDetailsService;
 
     @InjectMocks
-    AuthenticateUserServiceDevKit authenticationService;
+    AuthenticateUserServiceDefault authenticationService;
 
     @After
     public void tearDown() {
@@ -62,7 +64,7 @@ public class AuthenticateUserServiceDevKitTest {
         when(userDetailsService.getUserDetails(anyString(), anyString())).thenReturn(expectedResponse);
         when(userDetailsService.isValid(eq(expectedResponse))).thenReturn(true);
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .credentials("password")
             .name("user")
             .build();
@@ -85,7 +87,7 @@ public class AuthenticateUserServiceDevKitTest {
 
         when(userDetailsService.getUserDetails(anyString(), anyString())).thenThrow(expectedException);
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .credentials("password")
             .name("user")
             .build();
@@ -106,7 +108,7 @@ public class AuthenticateUserServiceDevKitTest {
 
         when(userDetailsService.getUserDetails(anyString(), anyString())).thenThrow(expectedException);
 
-        AuthenticateUserRequest request = AuthenticateUserRequest.builder()
+        AuthenticateRequest request = AuthenticateRequest.builder()
             .credentials("password")
             .name("user")
             .build();

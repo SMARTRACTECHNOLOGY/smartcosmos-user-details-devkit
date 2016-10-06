@@ -64,6 +64,10 @@
         </dependency>
         <dependency>
             <groupId>net.smartcosmos</groupId>
+            <artifactId>smartcosmos-user-details</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-user-entity-devkit</artifactId>
         </dependency>
         <dependency>
