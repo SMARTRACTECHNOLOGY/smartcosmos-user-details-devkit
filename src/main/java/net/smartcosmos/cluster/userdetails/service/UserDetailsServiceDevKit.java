@@ -64,6 +64,21 @@ public class UserDetailsServiceDevKit implements UserDetailsService {
     }
 
     @Override
+    public UserDetails getUserDetails(String username) throws IllegalArgumentException, AuthenticationException {
+
+        Assert.isTrue(StringUtils.isNotBlank(username), "username may not be blank");
+
+        Optional<UserEntity> userOptional = userRepository.findByUsernameIgnoreCase(username);
+        if (!userOptional.isPresent()) {
+            throw new UsernameNotFoundException("Invalid username or password");
+        }
+
+        UserEntity user = userOptional.get();
+
+        return conversionService.convert(user, UserDetails.class);
+    }
+
+    @Override
     public boolean isValid(UserDetails userDetails) {
 
         log.debug("Entity: {}", userDetails);
