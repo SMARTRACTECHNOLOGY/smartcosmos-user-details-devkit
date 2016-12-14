@@ -6,6 +6,7 @@
 
 * OBJECTS-980 Add Prometheus-compatible `/metrics` endpoint
 * PROFILES-667: add zipkin starter for distributed tracing
+* Add `GET /active/{username}` endpoint for token refresh
 
 === Bugfixes & Improvements
 

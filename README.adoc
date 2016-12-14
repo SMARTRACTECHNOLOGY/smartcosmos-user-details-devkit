@@ -17,6 +17,12 @@ Code and documentation copyright 2016 Smartrac Technology Fletcher, Inc.  Code r
 
 == REST API
 
+*Available methods*
+
+* <<authenticate, Authenticate - `POST /authenticate`>>
+* <<active, Active - `GET /active/{username}`>>
+
+[[authenticate]]
 === Authenticate - `POST /authenticate`
 
 ----
@@ -65,6 +71,45 @@ POST /authenticate
     "code": 1,
     "message": "Invalid username or password"
 }
+----
+
+[[active]]
+==== Active (used for Token Refresh) - `GET /active/{username}`
+
+This endpoint requires HTTP Basic Authentication.
+
+----
+GET /active/alice@example.com
+----
+
+.Response
+----
+200 OK
+----
+[source,json]
+----
+{
+   "authorities" : [
+      "https://authorities.smartcosmos.net/things/read"
+   ],
+   "tenantUrn" : "urn:account:uuid:53f452c2-5a01-44fd-9956-3ecff7c32b30",
+   "userUrn" : "urn:user:uuid:53f452c2-5a01-44fd-9956-3ecff7c32b30",
+   "name" : "alice@example.com",
+   "passwordHash" : ""
+}
+----
+----
+400 Bad Request
+----
+[source,json]
+----
+{
+   "code" : 1,
+   "message" : "Invalid username or password"
+}
+----
+----
+401 Unauthorized
 ----
 
 == Configuration
