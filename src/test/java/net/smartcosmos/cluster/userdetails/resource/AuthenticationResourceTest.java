@@ -303,6 +303,88 @@ public class AuthenticationResourceTest {
             .andReturn();
     }
 
+    @Test
+    public void thatActiveCheckSucceeds() throws Exception {
+
+        final String username = "username";
+
+        AuthenticateRequest request = AuthenticateRequest.builder()
+            .name(username)
+            .credentials("password")
+            .build();
+
+        String[] expectedAuthorities = { "https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write" };
+        UserDetails expectedResponseBody = UserDetails.builder()
+            .userUrn("userUrn")
+            .username(username)
+            .tenantUrn("tenantUrn")
+            .authorities(Arrays.asList(expectedAuthorities))
+            .build();
+        ResponseEntity expectedResponse = ResponseEntity.ok(expectedResponseBody);
+
+        when(authenticationService.isUserActive(eq(username))).thenReturn(expectedResponse);
+
+        MvcResult mvcResult = mockMvc.perform(
+            post("/active/{username}", username)
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.userUrn", is("userUrn")))
+            .andExpect(jsonPath("$.username", is(username)))
+            .andExpect(jsonPath("$.tenantUrn", is("tenantUrn")))
+            .andExpect(jsonPath("$.authorities", hasSize(2)))
+            .andExpect(jsonPath("$.authorities[0]", is("https://authorities.smartcosmos.net/things/read")))
+            .andExpect(jsonPath("$.authorities[1]", is("https://authorities.smartcosmos.net/things/write")))
+            .andExpect(jsonPath("$.authorities").isArray())
+            .andReturn();
+
+        verify(authenticationService, times(1)).isUserActive(eq(username));
+        verifyNoMoreInteractions(authenticationService);
+    }
+
+    @Test
+    public void thatActiveCheckSucceedsWithEmailAddressAsUsername() throws Exception {
+
+        final String username = "username@domain.com";
+
+        AuthenticateRequest request = AuthenticateRequest.builder()
+            .name(username)
+            .credentials("password")
+            .build();
+
+        String[] expectedAuthorities = { "https://authorities.smartcosmos.net/things/read", "https://authorities.smartcosmos.net/things/write" };
+        UserDetails expectedResponseBody = UserDetails.builder()
+            .userUrn("userUrn")
+            .username(username)
+            .tenantUrn("tenantUrn")
+            .authorities(Arrays.asList(expectedAuthorities))
+            .build();
+        ResponseEntity expectedResponse = ResponseEntity.ok(expectedResponseBody);
+
+        when(authenticationService.isUserActive(eq(username))).thenReturn(expectedResponse);
+
+        MvcResult mvcResult = mockMvc.perform(
+            post("/active/{username}", username)
+                .header(HttpHeaders.AUTHORIZATION, basicAuth("smartcosmostestclient", "testPasswordPleaseIgnore"))
+                .content(json(request))
+                .contentType(APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.userUrn", is("userUrn")))
+            .andExpect(jsonPath("$.username", is(username)))
+            .andExpect(jsonPath("$.tenantUrn", is("tenantUrn")))
+            .andExpect(jsonPath("$.authorities", hasSize(2)))
+            .andExpect(jsonPath("$.authorities[0]", is("https://authorities.smartcosmos.net/things/read")))
+            .andExpect(jsonPath("$.authorities[1]", is("https://authorities.smartcosmos.net/things/write")))
+            .andExpect(jsonPath("$.authorities").isArray())
+            .andReturn();
+
+        verify(authenticationService, times(1)).isUserActive(eq(username));
+        verifyNoMoreInteractions(authenticationService);
+    }
+
     // region Utilities
 
     protected String json(Object o) throws IOException {
