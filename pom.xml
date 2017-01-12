@@ -31,11 +31,6 @@
             </dependency>
             <dependency>
                 <groupId>net.smartcosmos</groupId>
-                <artifactId>smartcosmos-database-devkit</artifactId>
-                <version>3.0.1-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>net.smartcosmos</groupId>
                 <artifactId>smartcosmos-user-entity-devkit</artifactId>
                 <version>3.0.1-SNAPSHOT</version>
             </dependency>
@@ -49,10 +44,6 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.smartcosmos</groupId>
-            <artifactId>smartcosmos-database-devkit</artifactId>
         </dependency>
         <dependency>
             <groupId>net.smartcosmos</groupId>
