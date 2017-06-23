@@ -21,6 +21,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>net.smartcosmos</groupId>
+                <artifactId>${user-entity-module}</artifactId>
+                <version>${user-entity-module.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>4.1</version>
@@ -34,14 +39,13 @@
                 <artifactId>smartcosmos-database-devkit</artifactId>
                 <version>3.0.1-SNAPSHOT</version>
             </dependency>
-            <dependency>
-                <groupId>net.smartcosmos</groupId>
-                <artifactId>smartcosmos-user-entity-devkit</artifactId>
-                <version>3.0.1-SNAPSHOT</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
+        <dependency>
+            <groupId>net.smartcosmos</groupId>
+            <artifactId>${user-entity-module}</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
@@ -65,10 +69,6 @@
         <dependency>
             <groupId>net.smartcosmos</groupId>
             <artifactId>smartcosmos-user-details</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.smartcosmos</groupId>
-            <artifactId>smartcosmos-user-entity-devkit</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -108,12 +108,38 @@
             </plugin>
         </plugins>
     </build>
-
     <scm>
         <connection>scm:git:ssh://git@github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit.git</developerConnection>
         <url>https://github.com/SMARTRACTECHNOLOGY/smartcosmos-user-details-devkit/tree/master/</url>
         <tag>HEAD</tag>
     </scm>
+
+    <profiles>
+        <profile>
+            <id>user-entity-profiles</id>
+            <activation>
+                <property>
+                    <name>!devkit</name>
+                </property>
+            </activation>
+            <properties>
+                <user-entity-module>profiles-user-entity</user-entity-module>
+                <user-entity-module.version>3.0.1-SNAPSHOT</user-entity-module.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>user-entity-devkit</id>
+            <activation>
+                <property>
+                    <name>devkit</name>
+                </property>
+            </activation>
+            <properties>
+                <user-entity-module>smartcosmos-user-entity-devkit</user-entity-module>
+                <user-entity-module.version>3.0.1-SNAPSHOT</user-entity-module.version>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
