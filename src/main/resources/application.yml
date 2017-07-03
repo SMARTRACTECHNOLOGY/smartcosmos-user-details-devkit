@@ -6,3 +6,43 @@ info:
     name: @project.name@
     description: @project.description@
     version: @project.version@
+
+eureka:
+  client:
+    enabled: false
+
+server:
+  port: 42000
+
+spring:
+  datasource:
+    #
+    # CREATE DATABASE devkit;  GRANT ALL PRIVILEGES ON devkit.* TO 'cosmos'@'localhost' IDENTIFIED BY 'dev';  FLUSH PRIVILEGES;
+    #
+    url: jdbc:mysql://127.0.0.1:3306/profiles_user?autoReconnect=true
+    username: 'root'
+    password: 'root'
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming_strategy: org.hibernate.cfg.EJB3NamingStrategy
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+flyway:
+  enabled: false
+
+smartcosmos:
+  security:
+    enabled: true
+    resource:
+      user-details:
+        user:
+          name: POSTMAN_TEST_CLIENT_USER
+          password: POSTMAN_TEST_CLIENT_PASSWORD
+#          name: '{cipher}870a24621ada2b941d6f924ea08dacedda9e0ae4ef38d9a88b8801b4f9b9f376f4f3c1ad19758d79cbcdf6528cc00580bf963e1d1c164d34384b11153e41b215'
+#          password: '{cipher}f0a354c72c106299c940f045085998177b1b9bae2ec966ba884cf70949c21c895f1f689c78f236ea08f9c181eed18775ef52bd1bc77bd68932a33154efe6f1bc'
+#          name: smartcosmostestclient
+#         password: testPasswordPleaseIgnore
